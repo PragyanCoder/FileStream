@@ -6,9 +6,6 @@ RUN pip install -r requirements.txt
 
 
 # Install Python dependencies
-RUN pip3 install wheel \
-    && pip3 install --no-cache-dir -U -r requirements.txt
-
 # Set the working directory inside the container
 WORKDIR /app
 
