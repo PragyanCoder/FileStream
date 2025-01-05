@@ -1,8 +1,8 @@
 FROM python:3.11
 
-
-RUN pip install --upgrade pip
-RUN pip install -r requirements.txt
+USER ..
+RUN pip3 install --upgrade pip
+RUN pip3 install -r requirements.txt
 
 
 # Install Python dependencies
