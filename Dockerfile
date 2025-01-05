@@ -1,20 +1,21 @@
-FROM python:3.11
+# Use an official Python image
+FROM python:3.9-slim
 
-USER ..
-RUN pip3 install --upgrade pip
-RUN pip3 install -r requirements.txt
-
-
-# Install Python dependencies
 # Set the working directory inside the container
 WORKDIR /app
 
-# Copy the rest of the project files to the container
+# Copy requirements.txt into the container
+COPY requirements.txt .
+
+# Install Python dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy the entire application code into the container
 COPY . .
 
-# Expose port for the Flask application
-EXPOSE 8000
-EXPOSE 5000
-EXPOSE 8090
-# Start both Flask and Gunicorn in a single CMD (use bash to run both commands)
-CMD bash -c "flask run -h 0.0.0.0 -p 8090 & gunicorn app:app & python3 -m FileStream"
+# Expose the port the app runs on
+EXPOSE 8090 5000 8080
+
+# Run multiple commands with a shell script
+# Gunicorn for Flask app and FileStream script run in parallel
+CMD gunicorn -w 4 -b 0.0.0.0:8090 app:app & python3 -m FileStream
